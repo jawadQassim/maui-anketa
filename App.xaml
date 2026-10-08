@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AnketaMaui.App">
+  <Application.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Label">
+        <Setter Property="TextColor" Value="#15243C" />
+        <Setter Property="FontSize" Value="15" />
+      </Style>
+      <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="#15243C" />
+        <Setter Property="PlaceholderColor" Value="#64748B" />
+        <Setter Property="BackgroundColor" Value="#F1F5FB" />
+      </Style>
+      <Style TargetType="Button">
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+        <Setter Property="BackgroundColor" Value="#2458D3" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontAttributes" Value="Bold" />
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AnketaMaui.MainPage" Title="Анкета студента"
+             BackgroundColor="#F3F6FC">
+  <ScrollView x:Name="FormScroll">
+    <VerticalStackLayout Padding="20,28" Spacing="18" MaximumWidthRequest="700" HorizontalOptions="Fill">
+      <Image Source="course.png" Aspect="AspectFit" HeightRequest="120" Margin="0,0,0,4"
+             SemanticProperties.Description="Ноутбук — обучение программированию" />
+      <Label Text="Ваш путь в программирование" FontSize="28" FontAttributes="Bold" Margin="0,0,0,4" />
+      <Label Text="Анкета участника курса. Поля со звёздочкой обязательны." FontSize="15" FontAttributes="None" />
+      <Border BackgroundColor="White" Stroke="#DCE4F1" StrokeShape="RoundRectangle 16" Padding="18">
+        <VerticalStackLayout Spacing="12">
+          <Label Text="01 / Знакомство" FontSize="19" FontAttributes="Bold" />
+          <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*" RowSpacing="8">
+            <Label Grid.Row="0" Grid.Column="0" Text="Имя *" FontSize="15" FontAttributes="Bold" />
+            <Entry Grid.Row="1" Grid.Column="0" x:Name="NameEntry" Placeholder="Как к вам обращаться?"
+                   Keyboard="Text" MaxLength="60" TextChanged="OnAnswersChanged" Margin="0,0,0,8" />
+            <Label Grid.Row="2" Grid.Column="0" Text="Электронная почта *" FontSize="15" FontAttributes="Bold" />
+            <Entry Grid.Row="3" Grid.Column="0" x:Name="EmailEntry" Placeholder="name@example.com"
+                   Keyboard="Email" MaxLength="120" TextChanged="OnAnswersChanged" />
+          </Grid>
+          <Label Text="Курс *" FontSize="15" FontAttributes="Bold" />
+          <Picker x:Name="CoursePicker" Title="Выберите направление" TextColor="#15243C" TitleColor="#64748B"
+                  SelectedIndexChanged="OnAnswersChanged">
+            <Picker.Items>
+              <x:String>C# и .NET MAUI</x:String>
+              <x:String>JavaScript и веб-разработка</x:String>
+              <x:String>Python и анализ данных</x:String>
+            </Picker.Items>
+          </Picker>
+          <Label Text="Текущий уровень" FontSize="15" FontAttributes="Bold" />
+          <VerticalStackLayout Spacing="2">
+            <RadioButton x:Name="BeginnerRadio" Content="Начинающий" GroupName="Experience" Value="Начинающий" IsChecked="True" TextColor="#15243C" CheckedChanged="OnAnswersChanged" />
+            <RadioButton x:Name="IntermediateRadio" Content="Средний" GroupName="Experience" Value="Средний" TextColor="#15243C" CheckedChanged="OnAnswersChanged" />
+            <RadioButton x:Name="AdvancedRadio" Content="Продвинутый" GroupName="Experience" Value="Продвинутый" TextColor="#15243C" CheckedChanged="OnAnswersChanged" />
+          </VerticalStackLayout>
+        </VerticalStackLayout>
+      </Border>
+      <Border BackgroundColor="White" Stroke="#DCE4F1" StrokeShape="RoundRectangle 16" Padding="18">
+        <VerticalStackLayout Spacing="12">
+          <Label Text="02 / Учебный план" FontSize="19" FontAttributes="Bold" />
+          <Label Text="Что вам интересно?" FontSize="15" FontAttributes="Bold" />
+          <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <CheckBox Grid.Row="0" Grid.Column="0" x:Name="WebCheckBox" IsChecked="False" Color="#2458D3" CheckedChanged="OnAnswersChanged" SemanticProperties.Description="Веб-разработка" />
+            <Label Grid.Row="0" Grid.Column="1" Text="Веб-разработка" VerticalOptions="Center" />
+            <CheckBox Grid.Row="1" Grid.Column="0" x:Name="MobileCheckBox" IsChecked="False" Color="#2458D3" CheckedChanged="OnAnswersChanged" SemanticProperties.Description="Мобильные приложения" />
+            <Label Grid.Row="1" Grid.Column="1" Text="Мобильные приложения" VerticalOptions="Center" />
+          </Grid>
+          <Label Text="Желаемая дата начала" FontSize="15" FontAttributes="Bold" />
+          <DatePicker x:Name="StartDatePicker" Format="dd.MM.yyyy" MinimumDate="01/01/2026"
+                      MaximumDate="12/31/2030" Date="11/01/2026" TextColor="#15243C" DateSelected="OnAnswersChanged" />
+          <Label Text="Сколько часов в неделю готовы учиться?" FontSize="15" FontAttributes="Bold" />
+          <Stepper x:Name="HoursStepper" Minimum="1" Maximum="40" Value="5" Increment="1" ValueChanged="OnAnswersChanged" />
+          <Label Text="{Binding Source={x:Reference HoursStepper}, Path=Value, Mode=OneWay, StringFormat='Часов в неделю: {0:F0}'}"
+                 FontSize="17" FontAttributes="Bold" TextColor="#2458D3" />
+          <Grid RowDefinitions="Auto" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Label Grid.Row="0" Grid.Column="0" Text="Напоминания о занятиях" VerticalOptions="Center" />
+            <Switch Grid.Row="0" Grid.Column="1" x:Name="ReminderSwitch" IsToggled="False" OnColor="#2458D3" Toggled="OnAnswersChanged" />
+          </Grid>
+          <Label Text="Напоминания выбраны. Это учебная анкета: письма не отправляются."
+                 IsVisible="{Binding Source={x:Reference ReminderSwitch}, Path=IsToggled, Mode=OneWay}"
+                 FontSize="13" TextColor="#52637B" />
+          <Label Text="Ваша цель" FontSize="15" FontAttributes="Bold" />
+          <Editor x:Name="GoalEditor" Placeholder="Чему вы хотите научиться?" AutoSize="TextChanges" MaxLength="500"
+                  MinimumHeightRequest="100" TextColor="#15243C" PlaceholderColor="#64748B" BackgroundColor="#F1F5FB" TextChanged="OnAnswersChanged" />
+        </VerticalStackLayout>
+      </Border>
+      <Label x:Name="ValidationLabel" Text="" IsVisible="False" TextColor="#B42318" FontSize="14" />
+      <VerticalStackLayout Spacing="10">
+        <Button Text="Показать результат" Clicked="OnShowResultClicked" />
+        <Button Text="Очистить" Clicked="OnClearClicked" BackgroundColor="#E2EAF8" TextColor="#1E3A70" />
+      </VerticalStackLayout>
+      <Border x:Name="ResultBorder" IsVisible="False" BackgroundColor="#EAF4EF" Stroke="#C8E3D4" StrokeShape="RoundRectangle 16" Padding="18">
+        <VerticalStackLayout Spacing="12">
+          <Label Text="Ваша анкета" FontSize="21" FontAttributes="Bold" />
+          <Label x:Name="ResultLabel" Text="" FontSize="16" LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
+      </Border>
+      <Label Text="Учебный проект · .NET MAUI" FontSize="12" TextColor="#64748B" HorizontalTextAlignment="Center" Margin="0,4,0,8" />
+    </VerticalStackLayout>
+  </ScrollView>
+</ContentPage>
